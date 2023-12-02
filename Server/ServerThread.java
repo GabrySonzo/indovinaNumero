@@ -9,7 +9,6 @@ public class ServerThread extends Thread{
 
     public ServerThread (Socket socket) {
         this.socket = socket;
-        System.out.println("  Stato    Tipo Richiesta  Porta Server  Porta Client  Indirizzo Client\n");
     }
 
     public void run() {
@@ -17,40 +16,38 @@ public class ServerThread extends Thread{
             int number = (int) (Math.random() * 100);
             int i = 0;
             boolean indovinato = false;
-            System.out.println("Il numero da indovinare e' " + number);
+            System.out.println("Il numero da indovinare per " + socket.getPort() + "/" + socket.getLocalPort() + " e' " + number);
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream())); 
             DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-            while(i<5) {
+            while(true) {
                 String userInput = in.readLine();
-                System.out.println("Il Client "+ socket.getInetAddress() +" "
-                + socket.getPort() +" "
-                + socket.getLocalPort() +" ha scritto: " + userInput);
-                i++;
-                if (userInput == null || userInput.equals("QUIT"))
+                if (userInput == null || userInput.equals("QUIT")){
+                    indovinato = true;
                     break;
+                }
+                System.out.print("Il Client " + socket.getPort() + "/" + socket.getLocalPort() +" ha scritto: " + userInput + " ");
+                i++;
                 int guess = Integer.parseInt(userInput);
                 if(guess == number){
                     out.writeBytes("CORRECT\n");
-                    System.out.println("CORRECT");
+                    System.out.println("(CORRECT)");
                     indovinato = true;
                     break;
                 } else if(guess < number){
                     out.writeBytes("LOW\n");
-                    System.out.println("LOW");
+                    System.out.println("(LOW)");
                 } else {
                     out.writeBytes("HIGH\n");
-                    System.out.println("HIGH");
+                    System.out.println("(HIGH)");
                 }
             }
             if(!indovinato){
                 out.writeBytes(number + "\n");
-                System.out.println("Il Client "+ socket.getInetAddress() +" "
-                + socket.getPort() +" "
-                + socket.getLocalPort() +" ha esaurito i tentativi");
+                System.out.println("Il Client " + socket.getPort() + "/" + socket.getLocalPort() + " ha esaurito i tentativi");
             }
             out.close();
             in.close();
-            System.out.println("Ricezione una chiamata di chiusura da:\n" + socket + "\n");
+            System.out.print(" -- RICEZIONE DI UNA CHIAMATA DI CHIUSURA DA " + socket.getPort() + "/" + socket.getLocalPort() + " -- \n");
             socket.close();
         }
         catch (IOException e) {

@@ -10,13 +10,13 @@ public class Server {
        ServerSocket serverSocket = new ServerSocket(7777);
        BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in)); 
         //Ciclo infinito di ascolto dei Client
-        System.out.println(" Attesa ");
+        System.out.println(" Attesa di un socket client sulla porta 7777\n");
         while(true){
             /*String userInput = stdIn.readLine(); 
             if (userInput.equals("QUIT")) 
                 break;*/
             Socket socket = serverSocket.accept();
-            System.out.println("Ricezione una chiamata di apertura da:\n" + socket);
+            System.out.print("-- RICEZIONE DI UNA CHIMATA DI APERTURA DA " + socket.getPort() + "/" + socket.getLocalPort() + " -- \n");
             //avvia il processo per ogni client 
             ServerThread serverThread = new ServerThread(socket);
             serverThread.start();

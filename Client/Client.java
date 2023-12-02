@@ -22,8 +22,13 @@ public class Client {
         { 
             System.out.print("Indovina il numero hai ancora " + (5-i) + " tentativi : ");
             String userInput = stdIn.readLine(); 
-            if (userInput.equals("QUIT")) 
+            if (userInput.equals("QUIT")){
+                indovinato = true;
                 break; 
+            }else if((!userInput.matches("[0-9]+") || userInput.equals(""))){
+                System.out.println("Inserire un numero");
+                continue;
+            }
             out.writeBytes(userInput + '\n');
             
             String input = in.readLine();
@@ -42,6 +47,7 @@ public class Client {
             i++;
         } 
         if(!indovinato){
+            out.writeBytes("QUIT\n");
             System.out.println("Hai perso il numero da indovinare era " + in.readLine());
         }
         //Chiusura dello Stream e del Socket 
