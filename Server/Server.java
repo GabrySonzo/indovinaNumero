@@ -10,8 +10,8 @@ public class Server {
        ServerSocket serverSocket = new ServerSocket(7777);
        BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in)); 
         //Ciclo infinito di ascolto dei Client
+        System.out.println(" Attesa ");
         while(true){
-            System.out.println(" Attesa ");
             /*String userInput = stdIn.readLine(); 
             if (userInput.equals("QUIT")) 
                 break;*/

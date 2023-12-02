@@ -16,27 +16,34 @@ public class Client {
         System.out.print("Per disconnettersi dal Server scrivere: QUIT\n"); 
 
         //Ciclo infinito per inserimento testo del Client 
-        while (true) 
+        int i = 0;
+        boolean indovinato = false;
+        while (i<5) 
         { 
-            System.out.print("Inserisci: "); 
+            System.out.print("Indovina il numero hai ancora " + (5-i) + " tentativi : ");
             String userInput = stdIn.readLine(); 
             if (userInput.equals("QUIT")) 
                 break; 
             out.writeBytes(userInput + '\n');
-
+            
             String input = in.readLine();
             if (input.equals("CORRECT")){
-                System.out.println("Hai indovinato!");
+                System.out.println("Hai indovinato in " + (i+1) + " tentativi!");
+                indovinato = true;
                 break;
             } else if (input.equals("LOW")){
                 System.out.println("Troppo basso!");
             } else if (input.equals("HIGH")){
                 System.out.println("Troppo alto!");
             } else {
-                System.out.println("Errore!");
+                System.out.println("Errore");
+                break;
             }
+            i++;
         } 
-
+        if(!indovinato){
+            System.out.println("Hai perso il numero da indovinare era " + in.readLine());
+        }
         //Chiusura dello Stream e del Socket 
         out.close(); 
         in.close(); 
